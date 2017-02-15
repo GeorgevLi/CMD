@@ -1,0 +1,79 @@
+
+bailin.li@PL00116 MINGW64 ~
+$ git --help
+$ git --version
+$ git config --global user.name "George Li"
+$ git config --global user.email "bailinlee@gmail.com"
+$ git config --list
+
+$ git config --help
+$ ls
+$ cd c:
+$ cd MyGit/
+$ ls
+
+bailin.li@PL00116 MINGW64 /c/MyGit
+$ git init
+Initialized empty Git repository in C:/MyGit/.git/
+
+bailin.li@PL00116 MINGW64 /c/MyGit (master)
+$ ls -a
+./  ../  .git/
+$ ls -a
+./  ../  .git/  .gitignore  Giturls.txt
+
+bailin.li@PL00116 MINGW64 /c/MyGit (master)
+$ ls -a
+./  ../  .git/  .gitignore  Giturls.txt
+
+bailin.li@PL00116 MINGW64 /c/MyGit (master)
+$ ls -a
+./   .git/       'Giturls - Copy.doc'  Giturls.txt
+../  .gitignore  'Giturls - Copy.txt'
+
+bailin.li@PL00116 MINGW64 /c/MyGit (master)
+$ git reset Giturls.txt
+
+bailin.li@PL00116 MINGW64 /c/MyGit (master)
+$ git status
+$ git add -A
+$ git log
+$ git commit -m "just a refresh"
+$ git branch
+$ git branch -a
+$ git diff
+$ git commit -m "old command file"
+$ git branch cmd-tut
+$ git branch
+  cmd-tut
+* master
+
+bailin.li@PL00116 MINGW64 /c/MyGit (master)
+$ git checkout cmd-tut
+Switched to branch 'cmd-tut'
+bailin.li@PL00116 MINGW64 /c/MyGit (cmd-tut)
+$ git branch
+* cmd-tut
+  master
+$ git checkout master
+$ git merge cmd-tut
+$ git branch -d cmd-tut
+
+$ git push -u origin master
+$ git push --set-upstream origin cmd-tut
+
+$ git branch -v
+* master 40f4ab8 old command file
+
+bailin.li@PL00116 MINGW64 /c/MyGit (master)
+$ git branch -a
+* master
+  remotes/origin/master
+
+bailin.li@PL00116 MINGW64 /c/MyGit (master)
+$ git branch -r
+  origin/master
+
+bailin.li@PL00116 MINGW64 /c/MyGit (master)
+
+
