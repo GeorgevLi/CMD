@@ -135,10 +135,7 @@ Account:
 Paretoqa/ u'n59{F~
 
 
-
-
 https://sbgatekeeper.speedybackup.com/SpeedyBackup.Gatekeeper.Web_deploy/CompAPI/comp/compId?compId={COMPID}
-
 
 sunny0528cc@gmail.com\yjcc0528
 bysqa001@gmail.com\bysqa101 
@@ -154,7 +151,6 @@ win32 endpoint:
 6B840268-CEDF-4DBD-8EAC-BE28AA69EE64
 M00-0C-29-1B-75-63
 
-
 scalable web and distributed system architecture.
 http://www.aosabook.org/en/distsys.html
 
@@ -169,3 +165,19 @@ https://www.youtube.com/watch?v=HVsySz-h9r4
 
 https://www.youtube.com/watch?v=HVsySz-h9r4
 
+to get the account from endpoint identifier
+
+select *  FROM [z_cloud_ols].[dbo].[z_users]
+where id_z_users in (
+SELECT [fk_id_z_users]
+  FROM [z_cloud_ols].[dbo].[license_lnk]
+  where fk_id_license in (
+select id_license from [z_cloud_ols].[dbo].[license]
+where id_license in (
+SELECT  [id_license_FK]
+  FROM [z_cloud_ols].[dbo].[endPoint]
+  --where [endPoint_identifier] like '%000C29069BF1%' for shehla
+  where [endPoint_identifier] in ('NOHDSERIAL-3770488074-00371220058567486296-000C298ED2D9','NOHDSERIAL-3770488074-00371220058567486296-000C29D0AE5B','NOHDSERIAL-2553736261-76487340746180222935-000C29C10A7F')
+  )
+  )
+  )
