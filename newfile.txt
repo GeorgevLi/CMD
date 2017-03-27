@@ -1,0 +1,18 @@
+cmd-tut
+FETCH_HEAD
+Giturls - Copy.doc
+Giturls.txt
+master
+MyNd/
+newfile.txt
+it is good
+:w
+:q
+:wq
+
+
+
+
+
+test.sh*
+adding new 
