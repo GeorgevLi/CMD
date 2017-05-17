@@ -227,7 +227,26 @@ The use of the IIFE in this manner is not as well known, but it quite powerful s
 — Note the two anonymous functions in the conditional statement
 — Why would you do this? Because it is powerful and badass.
 — I purposely added enough space between each section so the code can read better.
-
+var unnamedDocs = [], namedDocs = ["a_bridge_runover", "great_dreamers"];
+​
+​function createDoc(documentTitle) {
+    var documentName = documentTitle 
+        ?​
+        (function (theName) {
+            var newNamedDoc = theName.toLocaleLowerCase().replace(" ", "_");
+            namedDocs.push(newNamedDoc);
+        ​        return newNamedDoc;
+        })(documentTitle)
+        :
+        (function () {
+            var newUnnamedDoc = "untitled_" + Number(namedDocs.length + 1);
+            unnamedDocs.push(newUnnamedDoc);
+            return newUnnamedDoc;
+        })();
+​    return documentName;
+}
+​createDoc("Over The Rainbow"); // over_the rainbow​
+​createDoc(); // untitled_4
 
 
 
@@ -256,5 +275,137 @@ SQL  Query:
 
 RESTfull 
 it stands for representational state transfore is a simple stateless architecture that uses HTTP protocol. A client can access its resource by using URI(Uniform Resource Identifier)
+
+
+1. array.prototype.reduce (callback,[initialValue])
+where callback(accumulator,currentValue,CurrentIndex,Array)
+
+
+- The reduce method applies a function against an accumulator and each element in the array (from left to right) to reduce it to a single value 
+for example:
+var sum =[0, 1, 2, 3].reduce(function(acc, val) {
+  return acc + val;
+}, 0);
+// sum is 6
+it is better than the traditional method
+for (var i=0;i<arr.lenght;i++)
+{
+    sum+=arr[i];
+}
+
+
+var list1 = [[0, 1], [2, 3], [4, 5]];
+var list2 = [0, [1, [2, [3, [4, [5]]]]]];
+
+const flatten = arr => arr.reduce(
+  (acc, val) => acc.concat(
+    Array.isArray(val) ? flatten(val) : val
+  ),
+  []
+);
+flatten(list1); // returns [0, 1, 2, 3, 4, 5]
+flatten(list2); // returns [0, 1, 2, 3, 4, 5]
+
+/**
+  * Side Note: Explanation of recursion:
+  * 1. flatten[] --> []
+  * 2. flatten[0] --> [] + 0 --> [0]
+  * 3. flatten[0,1] --> [] + 0 --> [0] + 1 --> [0,1]
+  * 4. flatten[0,[1]] --> [] + 0 --> [0] + flatten[1] --> [0] + ([]+1) --> [0] + ([1]) --> [0,1]
+  */
+
+var maxCallback = ( acc, cur ) => Math.max( acc.x, cur.x );
+var maxCallback2 = ( max, cur ) => Math.max( max, cur );
+// reduce() without initialValue
+[ { x: 22 }, { x: 42 } ].reduce( maxCallback ); // 42
+[ { x: 22 }            ].reduce( maxCallback ); // { x: 22 }
+[                      ].reduce( maxCallback ); // TypeError
+
+// map/reduce; better solution, also works for empty arrays
+[ { x: 22 }, { x: 42 } ].map( el => el.x )
+                        .reduce( maxCallback2, -Infinity );
+for Arrow Function:
+[0, 1, 2, 3, 4].reduce( (prev, curr) => prev + curr );
+
+if you were to provide an initial value as the second argument to reduce, the result would look loke this:
+
+[0, 1, 2, 3, 4].reduce(
+  (accumulator, currentValue, currentIndex, array) => {
+    return accumulator + currentValue;
+  },
+  10
+);
+callback    accumulator currentValue    currentIndex    array   return value
+first call  10  0   0   [0, 1, 2, 3, 4] 10
+second call 10  1   1   [0, 1, 2, 3, 4] 11
+third call  11  2   2   [0, 1, 2, 3, 4] 13
+fourth call 13  3   3   [0, 1, 2, 3, 4] 16
+fifth call  16  4   4   [0, 1, 2, 3, 4] 20
+
+So two ways to do a sum:
+var sum = [0, 1, 2, 3].reduce(function (a, b) {
+  return a + b;
+}, 0);
+// sum is 6
+var total = [ 0, 1, 2, 3 ].reduce(
+  ( acc, cur ) => acc + cur,
+  0
+);
+
+--It is also to flatten an array of arrays
+var flattened = [[0, 1], [2, 3], [4, 5]].reduce(
+  function(a, b) {
+    return a.concat(b);
+  },
+  []
+);
+// flattened is [0, 1, 2, 3, 4, 5]
+or can be done like:
+var flattened = [[0, 1], [2, 3], [4, 5]].reduce(
+  ( acc, cur ) => acc.concat(cur),
+  []
+);
+-- it is also used to count instances of values in an object
+var names = ['Alice', 'Bob', 'Tiff', 'Bruce', 'Alice'];
+
+var countedNames = names.reduce(function (allNames, name) { 
+  if (name in allNames) {
+    allNames[name]++;
+  }
+  else {
+    allNames[name] = 1;
+  }
+  return allNames;
+}, {});
+// countedNames is:
+// { 'Alice': 2, 'Bob': 1, 'Tiff': 1, 'Bruce': 1 }
+
+
+
+--Bonding arrays contained in an array of objects using the spread operator and initialValue
+
+// friends - an array of objects where object field "books" - list of favorite books 
+var friends = [{
+  name: 'Anna',
+  books: ['Bible', 'Harry Potter'],
+  age: 21}, {
+  name: 'Bob',
+  books: ['War and peace', 'Romeo and Juliet'],
+  age: 26}, {
+  name: 'Alice',
+  books: ['The Lord of the Rings', 'The Shining'],
+  age: 18
+}];
+
+// allbooks - list which will contain all friends' books +  additional list contained in initialValue
+var allbooks = friends.reduce(function(prev, curr) {
+  return [...prev, ...curr.books];
+}, ['Alphabet']);
+
+// allbooks = [
+//   'Alphabet', 'Bible', 'Harry Potter', 'War and peace', 
+//   'Romeo and Juliet', 'The Lord of the Rings',
+//   'The Shining'
+// ]
 
 
