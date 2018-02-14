@@ -1,0 +1,106 @@
+JS,
+
+http://speakingjs.com/es5/ch16.html
+add(); // 1
+add(); //1
+
+but using closure will be working well.
+
+var add = (function () {
+    var counter = 0;
+    return function () {return counter += 1;}
+})();
+
+add(); //1
+add(); //2
+add(); //3
+// the counter is now 3
+
+
+1. dollar sign in js and jquery
+ it commonly appears in variable definition and function calls. it is nothing mysterious about it as it is just a variable name.
+ Internally, it is just a function or an alpha-numeric variable reference.
+ but is the ECMAScript 6, it represent a Template Literal
+
+In your example the $ has no special significance other than being a character of the name.
+
+var user = 'Bob'
+console.log(`We love ${user}.`); //Note backticks
+
+ and in Jqery, it is used to distinguse JQUERY object from javascript object.
+10. this
+Question: What the heck is this in JavaScript?
+
+Answer: At the time of execution of every function, JavaScript engine sets a property to the function called this which refer to the current execution context. this is always refer to an object and depends on how function is called. There are 7 different cases where the value of this varies.
+
+In the global context or inside a function this refers to the window object.
+Inside IIFE (immediate invoking function) if you use "use strict", value of this is undefined. To pass access window inside IIFE with "use strict", you have to pass this.
+While executing a function in the context of an object, the object becomes the value of this
+Inside a setTimeout function, the value of this is the window object.
+If you use a constructor (by using new keyword) to create an object, the value of this will refer to the newly created object.
+You can set the value of this to any arbitrary object by passing the object as the first parameter of bind, call or apply
+For dom event handler, value of this would be the element that fired the event
+
+
+Pass by value or by reference
+Question: Does JavaScript pass parameter by value or by reference?
+
+Answer: Primitive type (string, number, etc.) are passed by value and objects are passed by reference. If you change a property of the passed object, the change will be affected. However, you assign a new object to the passed object, the changes will not be reflected.
+
+
+var num = 10,
+    name = "Addy Osmani",
+    obj1 = {
+      value: "first value"
+    },
+    obj2 = {
+     value: "second value"
+    },
+    obj3 = obj2;
+ 
+function change(num, name, obj1, obj2) {
+    num = num * 10;
+    name = "Paul Irish";
+    obj1 = obj2;
+    obj2.value = "new value";
+}
+ 
+change(num, name, obj1, obj2);
+ 
+console.log(num); // 10
+console.log(name);// "Addy Osmani"
+console.log(obj1.value);//"first value"
+console.log(obj2.valuee);//"new value"
+console.log(obj3.valuee);//"new value"
+
+In JQuery:
+$() is shorthand for JQuery()
+
+
+
+1019 Wharf Street - Suite 600 | Victoria, BC | V8W 2Y9
+
+
+SQL  Query:
+
+1. right join vs right out join
+        table left table right
+    - right join performs a join starting from right-most
+    - returns all records from right table, and matched records form left
+    - result is NULL from left side if there is no match
+    - right join and right out join are same
+2. full join vs union
+    - full join returns all matching records from both tables whether the other matches or not
+    - full join  and full outer join are same
+3. left joing vs left out join
+    - left join performs a join starting from left-most
+    - returns all records from left table, and matched records from the right.
+    - result is NULL from right side if there is no match
+
+ 4. Inner join 
+    - return all records that are matching value in both tables
+
+
+
+RESTfull 
+it stands for representational state transfore is a simple stateless architecture that uses HTTP protocol. A client can access its resource by using URI(Uniform Resource Identifier)

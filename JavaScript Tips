@@ -1,0 +1,411 @@
+JS,
+
+http://speakingjs.com/es5/ch16.html
+add(); // 1
+add(); //1
+
+but using closure will be working well.
+
+var add = (function () {
+    var counter = 0;
+    return function () {return counter += 1;}
+})();
+
+add(); //1
+add(); //2
+add(); //3
+// the counter is now 3
+
+
+1. dollar sign in js and jquery
+ it commonly appears in variable definition and function calls. it is nothing mysterious about it as it is just a variable name.
+ Internally, it is just a function or an alpha-numeric variable reference.
+ but is the ECMAScript 6, it represent a Template Literal
+
+In your example the $ has no special significance other than being a character of the name.
+
+var user = 'Bob'
+console.log(`We love ${user}.`); //Note backticks
+
+ and in Jqery, it is used to distinguse JQUERY object from javascript object.
+10. this
+Question: What the heck is this in JavaScript?
+
+Answer: At the time of execution of every function, JavaScript engine sets a property to the function called this which refer to the current execution context. this is always refer to an object and depends on how function is called. There are 7 different cases where the value of this varies.
+
+In the global context or inside a function this refers to the window object.
+Inside IIFE (immediate invoking function) if you use "use strict", value of this is undefined. To pass access window inside IIFE with "use strict", you have to pass this.
+While executing a function in the context of an object, the object becomes the value of this
+Inside a setTimeout function, the value of this is the window object.
+If you use a constructor (by using new keyword) to create an object, the value of this will refer to the newly created object.
+You can set the value of this to any arbitrary object by passing the object as the first parameter of bind, call or apply
+For dom event handler, value of this would be the element that fired the event
+
+
+Pass by value or by reference
+Question: Does JavaScript pass parameter by value or by reference?
+
+Answer: Primitive type (string, number, etc.) are passed by value and objects are passed by reference. If you change a property of the passed object, the change will be affected. However, you assign a new object to the passed object, the changes will not be reflected.
+
+
+var num = 10,
+    name = "Addy Osmani",
+    obj1 = {
+      value: "first value"
+    },
+    obj2 = {
+     value: "second value"
+    },
+    obj3 = obj2;
+ 
+function change(num, name, obj1, obj2) {
+    num = num * 10;
+    name = "Paul Irish";
+    obj1 = obj2;
+    obj2.value = "new value";
+}
+ 
+change(num, name, obj1, obj2);
+ 
+console.log(num); // 10
+console.log(name);// "Addy Osmani"
+console.log(obj1.value);//"first value"
+console.log(obj2.valuee);//"new value"
+console.log(obj3.valuee);//"new value"
+
+In JQuery:
+$() is shorthand for JQuery()
+
+
+JaveScript tips:
+
+The shortcutting in Js logical "OR:
+ to set default values, instead of this:
+
+function documentTitle(theTitle)
+​if (!theTitle) {
+  theTitle  = "Untitled Document";
+  }
+}
+
+use this:
+
+function documentTitle(theTitle)
+  theTitle  = theTitle || "Untitled Document";
+}
+
+note:
+- first the || operator first evaluates the expression on the left, if it is truthy, it will return the value. otherwise, it will return the evaluated value of the left.
+- Javascript falsy values: null,false,0,undefined,NaN,and ""(empty string)
+Instead of this:
+var userID;
+​if (userName && userName.loggedIn) {
+  userID = userName.id;
+}
+​else {
+  userID = null;
+}
+
+use:
+var userID = userName && userName.loggedIn && userName.id
+- if userName is truthy, call userName.loggedin and check if it is truthy;if it is truthy, then get the id from userName.
+- if userName is falsy, return null
+
+The shortchutting in js Logical "AND"
+instead of this:
+
+function isAdult(age) {
+  if (age && age > 17) {
+        return true;
+  }​else {
+    return false;
+  }
+}
+
+use:
+function isAdult(age) {
+   return age && age > 17 ;
+}
+
+Expanation:
+- The && operator first evaluates teh expression on the left. If it is falsy, false is returned; it does not bother to evaluate the right operand
+- if the first expression is truth, also evaluated the right operand and return the result
+
+Go further:
+
+instead of this:
+if (userName) {
+  logIn (userName);
+}
+ else {
+   signUp ();
+}
+
+use this:
+userName && logIn (userName) || signUp ();
+
+NOte:
+Explanation:
+— If userName is truthy, then call the logIn function with userName as the parameter.
+— If userName is falsy, call the signUp function
+
+POWERFUL USES OF IMMEDIATELY INVOKED FUNCTION EXPRESSIONS
+(How immediatedly invoke Function expression and when to use them)
+IIFE (pronounced “Iffy”) is an abbreviation for Immediately Invoked Function Expression, and the syntax looks like this:
+(function () {
+ // Do fun stuff​
+ }
+)()
+ it is an anonymous functions expression that is immediatedly invoked, and it has some particularly uses in Javascript
+
+ Similarly, we can even created a named, immediately invoked functions expression:
+
+ (showName = function (name) {console.log(name || "No Name")}) (); // No Name​
+​
+showName ("Rich"); // Rich​
+showName (); // No Name
+
+when to use iife:
+1. avoid declaring variables in the globle scope
+2. use an iiffe in the top level of your application
+3. keep the defined variables to shadow the already defined variable with the same name.
+
+--- first example
+ // All the code is wrapped in the IIFE​
+(function () {
+    var firstName = “Richard”;
+    function init () {
+            doStuff (firstName);
+            // code to start the application​
+    }
+    ​​function doStuff () {
+          // Do stuff here​
+    }
+                ​
+    ​function doMoreStuff () {
+         // Do more stuff here​
+    }
+    // Start the application
+    init ();
+}) (passedinparameters);
+--- second example
+
+Use it in Closures to Prevent Fold Over
+- To prevent close over in for loops, we can use an Immediately Invoked Function Expression to prevent a common bug when closures are used with for loops:
+To fix side effects (bug) in closures, you can use an IIFE, such as if this example:
+
+function celebrityIDCreator (theCelebrities) {
+    var i;
+    var uniqueID = 100;
+    for (i = 0; i < theCelebrities.length; i++) {
+        theCelebrities[i]["id"] = function (j)  { // the j parametric variable is the i passed in on invocation of this IIFE​
+            return function () {
+                return uniqueID + j; 
+                // each iteration of the for loop passes the current value of i into this IIFE and it saves the correct value to the array​
+            }
+        } (i); // immediately invoke the function passing the i variable as a parameter​
+    }
+​
+    return theCelebrities;
+}
+​
+​var actionCelebs = [{name:"Stallone", id:0}, {name:"Cruise", id:0}, {name:"Willis", id:0}];
+​
+​var createIdForActionCelebs = celebrityIDCreator (actionCelebs);
+​
+​var stalloneID = createIdForActionCelebs [0];
+console.log(stalloneID.id()); // 100​
+​
+​var cruiseID = createIdForActionCelebs [1];
+console.log(cruiseID.id()); // 101
+
+
+Use With the condtional Operator
+
+The use of the IIFE in this manner is not as well known, but it quite powerful since you can execute complex logic without having to setup and call a named function:
+
+— Note the two anonymous functions in the conditional statement
+— Why would you do this? Because it is powerful and badass.
+— I purposely added enough space between each section so the code can read better.
+var unnamedDocs = [], namedDocs = ["a_bridge_runover", "great_dreamers"];
+​
+​function createDoc(documentTitle) {
+    var documentName = documentTitle 
+        ?​
+        (function (theName) {
+            var newNamedDoc = theName.toLocaleLowerCase().replace(" ", "_");
+            namedDocs.push(newNamedDoc);
+        ​        return newNamedDoc;
+        })(documentTitle)
+        :
+        (function () {
+            var newUnnamedDoc = "untitled_" + Number(namedDocs.length + 1);
+            unnamedDocs.push(newUnnamedDoc);
+            return newUnnamedDoc;
+        })();
+​    return documentName;
+}
+​createDoc("Over The Rainbow"); // over_the rainbow​
+​createDoc(); // untitled_4
+
+
+
+
+
+SQL  Query:
+
+1. right join vs right out join
+        table left table right
+    - right join performs a join starting from right-most
+    - returns all records from right table, and matched records form left
+    - result is NULL from left side if there is no match
+    - right join and right out join are same
+2. full join vs union
+    - full join returns all matching records from both tables whether the other matches or not
+    - full join  and full outer join are same
+3. left joing vs left out join
+    - left join performs a join starting from left-most
+    - returns all records from left table, and matched records from the right.
+    - result is NULL from right side if there is no match
+
+ 4. Inner join 
+    - return all records that are matching value in both tables
+
+
+
+RESTfull 
+it stands for representational state transfore is a simple stateless architecture that uses HTTP protocol. A client can access its resource by using URI(Uniform Resource Identifier)
+
+
+1. array.prototype.reduce (callback,[initialValue])
+where callback(accumulator,currentValue,CurrentIndex,Array)
+
+
+- The reduce method applies a function against an accumulator and each element in the array (from left to right) to reduce it to a single value 
+for example:
+var sum =[0, 1, 2, 3].reduce(function(acc, val) {
+  return acc + val;
+}, 0);
+// sum is 6
+it is better than the traditional method
+for (var i=0;i<arr.lenght;i++)
+{
+    sum+=arr[i];
+}
+
+
+var list1 = [[0, 1], [2, 3], [4, 5]];
+var list2 = [0, [1, [2, [3, [4, [5]]]]]];
+
+const flatten = arr => arr.reduce(
+  (acc, val) => acc.concat(
+    Array.isArray(val) ? flatten(val) : val
+  ),
+  []
+);
+flatten(list1); // returns [0, 1, 2, 3, 4, 5]
+flatten(list2); // returns [0, 1, 2, 3, 4, 5]
+
+/**
+  * Side Note: Explanation of recursion:
+  * 1. flatten[] --> []
+  * 2. flatten[0] --> [] + 0 --> [0]
+  * 3. flatten[0,1] --> [] + 0 --> [0] + 1 --> [0,1]
+  * 4. flatten[0,[1]] --> [] + 0 --> [0] + flatten[1] --> [0] + ([]+1) --> [0] + ([1]) --> [0,1]
+  */
+
+var maxCallback = ( acc, cur ) => Math.max( acc.x, cur.x );
+var maxCallback2 = ( max, cur ) => Math.max( max, cur );
+// reduce() without initialValue
+[ { x: 22 }, { x: 42 } ].reduce( maxCallback ); // 42
+[ { x: 22 }            ].reduce( maxCallback ); // { x: 22 }
+[                      ].reduce( maxCallback ); // TypeError
+
+// map/reduce; better solution, also works for empty arrays
+[ { x: 22 }, { x: 42 } ].map( el => el.x )
+                        .reduce( maxCallback2, -Infinity );
+for Arrow Function:
+[0, 1, 2, 3, 4].reduce( (prev, curr) => prev + curr );
+
+if you were to provide an initial value as the second argument to reduce, the result would look loke this:
+
+[0, 1, 2, 3, 4].reduce(
+  (accumulator, currentValue, currentIndex, array) => {
+    return accumulator + currentValue;
+  },
+  10
+);
+callback    accumulator currentValue    currentIndex    array   return value
+first call  10  0   0   [0, 1, 2, 3, 4] 10
+second call 10  1   1   [0, 1, 2, 3, 4] 11
+third call  11  2   2   [0, 1, 2, 3, 4] 13
+fourth call 13  3   3   [0, 1, 2, 3, 4] 16
+fifth call  16  4   4   [0, 1, 2, 3, 4] 20
+
+So two ways to do a sum:
+var sum = [0, 1, 2, 3].reduce(function (a, b) {
+  return a + b;
+}, 0);
+// sum is 6
+var total = [ 0, 1, 2, 3 ].reduce(
+  ( acc, cur ) => acc + cur,
+  0
+);
+
+--It is also to flatten an array of arrays
+var flattened = [[0, 1], [2, 3], [4, 5]].reduce(
+  function(a, b) {
+    return a.concat(b);
+  },
+  []
+);
+// flattened is [0, 1, 2, 3, 4, 5]
+or can be done like:
+var flattened = [[0, 1], [2, 3], [4, 5]].reduce(
+  ( acc, cur ) => acc.concat(cur),
+  []
+);
+-- it is also used to count instances of values in an object
+var names = ['Alice', 'Bob', 'Tiff', 'Bruce', 'Alice'];
+
+var countedNames = names.reduce(function (allNames, name) { 
+  if (name in allNames) {
+    allNames[name]++;
+  }
+  else {
+    allNames[name] = 1;
+  }
+  return allNames;
+}, {});
+// countedNames is:
+// { 'Alice': 2, 'Bob': 1, 'Tiff': 1, 'Bruce': 1 }
+
+
+
+--Bonding arrays contained in an array of objects using the spread operator and initialValue
+
+// friends - an array of objects where object field "books" - list of favorite books 
+var friends = [{
+  name: 'Anna',
+  books: ['Bible', 'Harry Potter'],
+  age: 21}, {
+  name: 'Bob',
+  books: ['War and peace', 'Romeo and Juliet'],
+  age: 26}, {
+  name: 'Alice',
+  books: ['The Lord of the Rings', 'The Shining'],
+  age: 18
+}];
+
+// allbooks - list which will contain all friends' books +  additional list contained in initialValue
+var allbooks = friends.reduce(function(prev, curr) {
+  return [...prev, ...curr.books];
+}, ['Alphabet']);
+
+// allbooks = [
+//   'Alphabet', 'Bible', 'Harry Potter', 'War and peace', 
+//   'Romeo and Juliet', 'The Lord of the Rings',
+//   'The Shining'
+// ]
+
+
